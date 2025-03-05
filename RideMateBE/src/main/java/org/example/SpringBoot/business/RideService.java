@@ -1,0 +1,14 @@
+package org.example.SpringBoot.business;
+
+import org.example.SpringBoot.domain.Ride;
+
+import java.util.List;
+
+public interface RideService {
+        List<Ride> getAllRides();
+        Ride getRideById(Long id);
+        Ride createRide(Ride trainer);
+        void deleteRide(Long id);
+        Ride updateRide(Ride trainer);
+    
+}

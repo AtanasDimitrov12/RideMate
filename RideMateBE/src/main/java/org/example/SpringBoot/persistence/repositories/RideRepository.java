@@ -1,0 +1,23 @@
+package org.example.SpringBoot.persistence.repositories;
+
+import org.example.SpringBoot.domain.Ride;
+import org.example.SpringBoot.domain.RideStatus;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface RideRepository {
+    boolean exists(long id);
+
+    List<Ride> getAll();
+
+    Ride create(Ride ride);
+
+    Ride update(Ride ride);
+
+    void delete(long rideId);
+
+    Optional<Ride> getRideById(long rideId);
+
+    Ride changeStatus(long rideId, RideStatus status);
+}
