@@ -19,7 +19,7 @@ public class VehicleRepositoryImpl implements VehicleRepository {
     private final VehicleEntityMapper vehicleEntityMapper;
 
     @Override
-    public boolean exists(long id) {
+    public boolean exists(Long id) {
         return jpaVehicleRepository.existsById(id);
     }
 
@@ -45,15 +45,21 @@ public class VehicleRepositoryImpl implements VehicleRepository {
     }
 
     @Override
-    public void delete(long trainerId) {
+    public void delete(Long trainerId) {
         jpaVehicleRepository.deleteById(trainerId);
     }
 
 
 
     @Override
-    public Optional<Vehicle> getVehicleById(long VehicleId) {
+    public Optional<Vehicle> getVehicleById(Long VehicleId) {
         return jpaVehicleRepository.findById(VehicleId)
+                .map(vehicleEntityMapper::toDomain);
+    }
+
+    @Override
+    public Optional<Vehicle> getVehicleByDriverId(Long driverId){
+        return jpaVehicleRepository.getVehicleEntityByDriverId(driverId)
                 .map(vehicleEntityMapper::toDomain);
     }
 }

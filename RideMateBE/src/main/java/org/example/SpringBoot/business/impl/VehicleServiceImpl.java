@@ -26,6 +26,12 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
+    public Vehicle getVehicleByDriverId(Long driverId){
+        return vehicleRepository.getVehicleByDriverId(driverId)
+                .orElseThrow(() -> new VehicleNotFoundException(driverId)); // For driverId !!!
+    }
+
+    @Override
     public Vehicle createVehicle(Vehicle Vehicle) {
 
         return vehicleRepository.create(Vehicle);

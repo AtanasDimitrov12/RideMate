@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface VehicleRepository {
-    boolean exists(long id);
+    boolean exists(Long id);
 
     List<Vehicle> getAll();
 
@@ -14,7 +14,9 @@ public interface VehicleRepository {
 
     Vehicle update(Vehicle vehicle);
 
-    void delete(long vehicleId);
+    void delete(Long vehicleId);
 
-    Optional<Vehicle> getVehicleById(long vehicleId);
+    Optional<Vehicle> getVehicleById(Long vehicleId);
+
+    Optional<Vehicle> getVehicleByDriverId(Long driverId);
 }

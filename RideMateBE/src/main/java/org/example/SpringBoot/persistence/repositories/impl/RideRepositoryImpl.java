@@ -60,6 +60,12 @@ public class RideRepositoryImpl implements RideRepository {
     }
 
     @Override
+    public Optional<Ride> getRideByUserId(long userId){
+        return jpaRideRepository.getRideEntityByUserId(userId)
+                .map(rideEntityMapper::toDomain);
+    }
+
+    @Override
     public Ride changeStatus(long rideId, RideStatus status){
         RideEntity RideEntity = jpaRideRepository.findById(rideId)
                 .orElseThrow(() -> new EntityNotFoundException("Ride not found with ID: " + rideId));

@@ -18,6 +18,7 @@ public interface RideRepository {
     void delete(long rideId);
 
     Optional<Ride> getRideById(long rideId);
+    Optional<Ride> getRideByUserId(long userId);
 
     Ride changeStatus(long rideId, RideStatus status);
 }

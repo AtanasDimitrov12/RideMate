@@ -27,6 +27,12 @@ public class RideServiceImpl implements RideService {
     }
 
     @Override
+    public Ride getRideByUserId(Long userId){
+        return rideRepository.getRideByUserId(userId)
+                .orElseThrow(() -> new RideNotFoundException(userId)); // for userId!!!
+    }
+
+    @Override
     public Ride createRide(Ride Ride) {
 
         return rideRepository.create(Ride);

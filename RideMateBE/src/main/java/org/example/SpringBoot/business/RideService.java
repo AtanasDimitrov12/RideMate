@@ -7,6 +7,7 @@ import java.util.List;
 public interface RideService {
         List<Ride> getAllRides();
         Ride getRideById(Long id);
+        Ride getRideByUserId(Long userId);
         Ride createRide(Ride trainer);
         void deleteRide(Long id);
         Ride updateRide(Ride trainer);
