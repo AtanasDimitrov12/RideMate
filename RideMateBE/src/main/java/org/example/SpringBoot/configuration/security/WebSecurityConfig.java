@@ -31,6 +31,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity,
                                            AuthenticationEntryPoint authenticationEntryPoint,
                                            AuthenticationRequestFilter authenticationRequestFilter) throws Exception {
+
         httpSecurity
                 .csrf(csrf -> csrf.disable()) // CSRF is disabled because this is a stateless API using JWT for authentication.
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Apply CORS configuration.
@@ -38,8 +39,9 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll() // Authentication endpoints are publicly accessible.
                         .requestMatchers("/user/**").hasRole("USER") // User endpoints require USER role.
+                        .requestMatchers("/driver/**").hasRole("DRIVER")
                         .requestMatchers("/admin/**").hasRole("ADMIN") // Admin endpoints require ADMIN role.
-                        .requestMatchers("/ws/**").permitAll() // WebSocket endpoints are publicly accessible.
+                        .requestMatchers("/ws/**").authenticated() // WebSocket endpoints are publicly accessible.
                         .anyRequest().authenticated() // All other requests require authentication.
                 )
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(authenticationEntryPoint)) // Handle authentication exceptions.
@@ -57,7 +59,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:5174", "https://my-fitness-guru.netlify.app")); // Frontend origin
+        configuration.setAllowedOrigins(List.of(corsHeader, "http://localhost:5173")); // Frontend origin
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true);
