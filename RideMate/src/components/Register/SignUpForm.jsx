@@ -7,6 +7,7 @@ const SignUpForm = () => {
   const [formData, setFormData] = useState({
     username: "",
     email: "",
+    phoneNumber: "",
     password: "",
     confirmPassword: "",
   });
@@ -17,7 +18,7 @@ const SignUpForm = () => {
   };
 
   const validateForm = () => {
-    const { username, email, password, confirmPassword } = formData;
+    const { username, email, phoneNumber, password, confirmPassword } = formData;
 
     if (!/^[A-Za-z]{3,}$/.test(username)) {
       toast.error("Username must contain only letters and be at least 3 characters long.");
@@ -25,6 +26,10 @@ const SignUpForm = () => {
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       toast.error("Please enter a valid email address.");
+      return false;
+    }
+    if (!/^\d{6,15}$/.test(phoneNumber)) {
+      toast.error("Phone number must be between 6 to 15 digits.");
       return false;
     }
     if (password.length < 8) {
@@ -43,10 +48,10 @@ const SignUpForm = () => {
 
     if (validateForm()) {
       try {
-        // const response = await registerUser(formData);
-        // response
-        //   ? toast.success("Signup successful!")
-        //   : toast.error("Signup failed. Please try again.");
+        const response = await registerUser(formData);
+        response
+          ? toast.success("Signup successful!")
+          : toast.error("Signup failed. Please try again.");
       } catch (error) {
         toast.error("An error occurred during signup.");
       }
@@ -59,6 +64,7 @@ const SignUpForm = () => {
         <h1 className="register-form">Sign Up</h1>
         
         <span>Please enter your credentials:</span>
+        
         <input
           type="text"
           placeholder="Username"
@@ -78,6 +84,15 @@ const SignUpForm = () => {
           data-testid="email-signup"
         />
         <input
+          type="tel"
+          placeholder="Phone Number"
+          name="phoneNumber"
+          value={formData.phoneNumber}
+          onChange={handleChange}
+          required
+          data-testid="phone-number-signup"
+        />
+        <input
           type="password"
           placeholder="Password"
           name="password"
@@ -95,6 +110,7 @@ const SignUpForm = () => {
           required
           data-testid="confirm-password-signup"
         />
+        
         <button type="submit" data-testid="sign-up-submit">Sign Up</button>
       </form>
     </div>

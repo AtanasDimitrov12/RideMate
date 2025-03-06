@@ -11,7 +11,6 @@ const RideMateLanding = () => {
       <HeroSection/>
       <FeaturesSection/>
       <HowItWorksSection/>
-      <Footer/>
       
     </div>
   );

@@ -56,8 +56,8 @@
 .auth-container button {
 	margin-top: 20px;
 	border-radius: 20px;
-	border: 1px solid #b3cf32;
-	background-color: #b3cf32;
+	border: 1px solid #55c2c3;
+	background-color: #55c2c3;
 	color: #FFFFFF;
 	font-size: 12px;
 	font-weight: bold;
@@ -69,7 +69,7 @@
 
 .auth-container button:hover {
 	border: 1px solid black;
-	background-color: #94ad25;
+	background-color: #0c243c;
 }
 
 .auth-container button:active {
@@ -86,7 +86,7 @@
 }
 
 .auth-container button.ghost:hover {
-	background-color: #94ad25;
+	background-color: #0c243c;
 	border-color: #FFFFFF;
 }
 
@@ -172,7 +172,7 @@
 }
 
 .auth-container .overlay {
-	background: #b3cf32;
+	background: #7e8c9c;
 	background: -webkit-linear-gradient(to right, #b3cf32, #9db828);
 	background: linear-gradient(to right, #b3cf32, #9db828);
 	background-repeat: no-repeat;
