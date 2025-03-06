@@ -2,7 +2,9 @@ package org.example.SpringBoot.controllers.mapper;
 
 import org.example.SpringBoot.controllers.dto.DriverDTO;
 import org.example.SpringBoot.domain.Driver;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DriverMapper {
 
     public Driver toDomain(DriverDTO driverDTO) {

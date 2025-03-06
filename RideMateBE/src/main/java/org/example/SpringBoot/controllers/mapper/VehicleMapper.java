@@ -2,7 +2,9 @@ package org.example.SpringBoot.controllers.mapper;
 
 import org.example.SpringBoot.controllers.dto.VehicleDTO;
 import org.example.SpringBoot.domain.Vehicle;
+import org.springframework.stereotype.Component;
 
+@Component
 public class VehicleMapper {
 
     public Vehicle toDomain(VehicleDTO vehicleDTO) {

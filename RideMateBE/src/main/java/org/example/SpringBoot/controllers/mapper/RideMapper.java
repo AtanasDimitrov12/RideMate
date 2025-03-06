@@ -2,7 +2,9 @@ package org.example.SpringBoot.controllers.mapper;
 
 import org.example.SpringBoot.controllers.dto.RideDTO;
 import org.example.SpringBoot.domain.Ride;
+import org.springframework.stereotype.Component;
 
+@Component
 public class RideMapper {
 
     public Ride toDomain(RideDTO rideDTO) {

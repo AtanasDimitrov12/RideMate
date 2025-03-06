@@ -33,6 +33,7 @@ public class AuthController {
         user.setUsername(userDTO.getUsername());
         user.setEmail(userDTO.getEmail());
         user.setPassword(userDTO.getPassword());
+        user.setPhoneNumber(userDTO.getPhoneNumber());
 
         authService.register(user);
         return ResponseEntity.ok("User registered successfully");
