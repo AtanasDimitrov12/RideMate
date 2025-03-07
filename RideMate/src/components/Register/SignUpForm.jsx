@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-//import { registerUser } from "../../repositories/AuthRepo";
+import { registerUser } from "../../repositories/AuthRepo";
 
 const SignUpForm = () => {
   const [formData, setFormData] = useState({

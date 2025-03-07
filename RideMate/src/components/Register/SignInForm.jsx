@@ -15,6 +15,9 @@ const SignInForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
     if (!username || !password) {
       toast.error("Both username and password are required.", { position: "top-center" });
       return;
@@ -49,9 +52,9 @@ const SignInForm = () => {
         toast.success("Login successful!", { position: "top-center" });
 
         if (roles.includes("USER")) {
-          navigate("/user-profile");
+          navigate("/");
         } else if (roles.includes("ADMIN")) {
-          navigate("/admin-create");
+          navigate("/");
         } else {
           toast.error("Unknown role. Please contact support.", { position: "top-center" });
         }

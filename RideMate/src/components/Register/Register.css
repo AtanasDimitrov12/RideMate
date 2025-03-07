@@ -173,8 +173,8 @@
 
 .auth-container .overlay {
 	background: #7e8c9c;
-	background: -webkit-linear-gradient(to right, #b3cf32, #9db828);
-	background: linear-gradient(to right, #b3cf32, #9db828);
+	background: -webkit-linear-gradient(to right, #55c2c3, #0c243c);
+	background: linear-gradient(to right, #55c2c3, #0c243c);
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: 0 0;
