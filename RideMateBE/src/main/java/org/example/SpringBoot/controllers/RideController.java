@@ -28,17 +28,18 @@ public class RideController {
                 .toList();
     }
 
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    @GetMapping("/user/{userId}")
+    public List<RideDTO> getAllRidesByUserId(@PathVariable Long userId) {
+        return rideService.getAllRidesByUserId(userId).stream()
+                .map(rideMapper::toDto)
+                .toList();
+    }
+
     @PreAuthorize("hasAnyRole('USER', 'DRIVER', 'ADMIN')")
     @GetMapping("/{id}")
     public RideDTO getRideById(@PathVariable Long id) {
         Ride Ride = rideService.getRideById(id);
-        return rideMapper.toDto(Ride);
-    }
-
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    @GetMapping("/user/{userId}")
-    public RideDTO getRideByUserId(@PathVariable Long userId) {
-        Ride Ride = rideService.getRideByUserId(userId);
         return rideMapper.toDto(Ride);
     }
 
@@ -66,4 +67,15 @@ public class RideController {
         rideService.deleteRide(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    @GetMapping("/user/{userId}/current")
+    public ResponseEntity<RideDTO> getCurrentRideByUserId(@PathVariable Long userId) {
+        Ride currentRide = rideService.getCurrentRideByUserId(userId);
+        if (currentRide != null) {
+            return ResponseEntity.ok(rideMapper.toDto(currentRide));
+        }
+        return ResponseEntity.noContent().build();
+    }
+
 }

@@ -27,7 +27,7 @@ const Navbar = () => {
             {user.roles.includes("USER") && (
               <>
                 <li><NavLink to="/book" className="text-white hover:underline cursor-pointer">Booking</NavLink></li>
-                <li><NavLink to="/rides" className="text-white hover:underline cursor-pointer">My Rides</NavLink></li>
+                <li><NavLink to="/user-dashboard" className="text-white hover:underline cursor-pointer">Dashboard</NavLink></li>
               </>
             )}
             {user.roles.includes("ADMIN") && (

@@ -21,6 +21,11 @@ public class RideServiceImpl implements RideService {
     }
 
     @Override
+    public List<Ride> getAllRidesByUserId(Long userId){
+        return rideRepository.getAllRidesByUserId(userId);
+    }
+
+    @Override
     public Ride getRideById(Long id) {
         return rideRepository.getRideById(id)
                 .orElseThrow(() -> new RideNotFoundException(id));
@@ -53,4 +58,12 @@ public class RideServiceImpl implements RideService {
 
         return rideRepository.update(existingRide);
     }
+
+    @Override
+    public Ride getCurrentRideByUserId(Long userId) {
+
+        return rideRepository.getCurrentRideByUserId(userId);
+    }
+
+
 }

@@ -33,6 +33,15 @@ public class RideRepositoryImpl implements RideRepository {
     }
 
     @Override
+    public List<Ride> getAllRidesByUserId(Long userId) {
+        return jpaRideRepository.getRidesByUserId(userId).stream()
+                .map(rideEntityMapper::toDomain)
+                .toList();
+    }
+
+
+
+    @Override
     public Ride create(Ride trainer) {
         RideEntity RideEntity = rideEntityMapper.toEntity(trainer);
         RideEntity savedEntity = jpaRideRepository.save(RideEntity);
@@ -74,6 +83,14 @@ public class RideRepositoryImpl implements RideRepository {
         RideEntity updatedRide = jpaRideRepository.save(RideEntity);
 
         return rideEntityMapper.toDomain(updatedRide);
+    }
+
+    @Override
+    public Ride getCurrentRideByUserId(Long userId){
+
+        return rideEntityMapper.toDomain(jpaRideRepository.findFirstByUserIdAndStatusIn(
+                userId, List.of("REQUESTED", "ACCEPTED", "IN_PROGRESS")
+        ).orElse(null));
     }
 
 }

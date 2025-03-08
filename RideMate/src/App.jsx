@@ -6,6 +6,7 @@ import RideBooking from './components/RideBooking/RideBooking';
 import Navbar from './components/LandingPage/Navbar';
 import Footer from './components/LandingPage/Footer';
 import AuthContainer from './components/Register/AuthContainer';
+import UserDashboard from "./components/UserDashboard/UserDashboard";
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
         <Route path="/" element={<Example/>} />
         <Route path="/book" element={<RideBooking />} />
         <Route path="/register" element={<AuthContainer />} />
+        <Route path="/user-dashboard/*" element={<UserDashboard />} />
       </Routes>
       <Footer/>
     </>
