@@ -20,6 +20,7 @@ public class RideEntityMapper {
                 rideEntity.getDriverId(),
                 rideEntity.getPickupLocation(),
                 rideEntity.getDropOffLocation(),
+                rideEntity.getRideOption(),
                 rideEntity.getEstimatedFare(),
                 rideEntity.getActualFare(),
                 rideEntity.getStatus(),
@@ -40,6 +41,7 @@ public class RideEntityMapper {
         rideEntity.setDriverId(ride.getDriverId());
         rideEntity.setPickupLocation(ride.getPickupLocation());
         rideEntity.setDropOffLocation(ride.getDropOffLocation());
+        rideEntity.setRideOption(ride.getRideOption());
         rideEntity.setEstimatedFare(ride.getEstimatedFare());
         rideEntity.setActualFare(ride.getActualFare());
         rideEntity.setStatus(ride.getStatus());

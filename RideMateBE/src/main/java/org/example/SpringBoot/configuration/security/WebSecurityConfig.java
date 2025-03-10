@@ -42,6 +42,8 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                         .requestMatchers("/driver/**").hasRole("DRIVER")
                         .requestMatchers("/admin/**").hasRole("ADMIN") // Admin endpoints require ADMIN role.
                         .requestMatchers("/ws/**").authenticated() // WebSocket endpoints are publicly accessible.
+                        .requestMatchers("/api/location/**").permitAll() // Allow location search without authentication
+
                         .anyRequest().authenticated() // All other requests require authentication.
                 )
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(authenticationEntryPoint)) // Handle authentication exceptions.

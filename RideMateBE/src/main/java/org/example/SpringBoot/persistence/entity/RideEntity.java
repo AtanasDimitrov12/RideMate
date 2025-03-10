@@ -2,6 +2,7 @@ package org.example.SpringBoot.persistence.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.example.SpringBoot.domain.RideOption;
 import org.example.SpringBoot.domain.RideStatus;
 
 import java.time.LocalDateTime;
@@ -29,6 +30,10 @@ public class RideEntity {
 
     @Column(nullable = false)
     private String dropOffLocation;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private RideOption rideOption;
 
     @Column(nullable = false)
     private Double estimatedFare;

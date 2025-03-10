@@ -16,6 +16,8 @@ public class Ride {
     private String pickupLocation;
     private String dropOffLocation;
 
+    private RideOption rideOption;
+
     private Double estimatedFare;
     private Double actualFare;
 

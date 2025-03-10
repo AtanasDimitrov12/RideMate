@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.SpringBoot.domain.RideOption;
 import org.example.SpringBoot.domain.RideStatus;
 
 import java.time.LocalDateTime;
@@ -19,6 +20,8 @@ public class RideDTO {
 
     private String pickupLocation;
     private String dropOffLocation;
+
+    private RideOption rideOption;
 
     private Double estimatedFare;
     private Double actualFare;
