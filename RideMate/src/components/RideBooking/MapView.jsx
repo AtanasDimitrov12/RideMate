@@ -1,45 +1,41 @@
-import React from "react";
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  Popup,
-  Polyline,
-  useMap,
-} from "react-leaflet";
+import React, { useEffect } from "react";
+import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
 
 const MapUpdater = () => {
-    const map = useMap();
-    React.useEffect(() => {
-      setTimeout(() => {
-        map.invalidateSize();
-      }, 500); // Ensure map resizes properly after rendering
-    }, [map]);
-    return null;
-  };
-  
+  const map = useMap();
+  useEffect(() => {
+    setTimeout(() => {
+      map.invalidateSize();
+    }, 300); // Ensures map resizes properly after rendering
+  }, [map]);
+  return null;
+};
 
 const MapView = ({ pickupCoords, dropoffCoords, route }) => {
+  const defaultCenter = pickupCoords || dropoffCoords || [51.4416, 5.4697];
+
   return (
-    <div className="w-full md:w-3/5 md:ml-6 min-h-[400px] h-[500px]">
+    <div className="w-full max-w-3xl mx-auto h-[400px] md:h-[500px] rounded-lg overflow-hidden shadow-lg">
       <MapContainer
-        center={[51.4416, 5.4697]}
+        center={defaultCenter}
         zoom={13}
-        className="h-full w-full rounded-lg"
+        className="w-full h-full"
+        scrollWheelZoom={false}
       >
         <MapUpdater />
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         {pickupCoords && (
           <Marker position={pickupCoords}>
-            <Popup>Pickup</Popup>
+            <Popup>Pickup Location</Popup>
           </Marker>
         )}
         {dropoffCoords && (
           <Marker position={dropoffCoords}>
-            <Popup>Drop-off</Popup>
+            <Popup>Drop-off Location</Popup>
           </Marker>
         )}
-        {route && <Polyline positions={route} color="blue" />}
+        {route && route.length > 1 && <Polyline positions={route} color="blue" />}
       </MapContainer>
     </div>
   );

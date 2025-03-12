@@ -3,6 +3,7 @@ import UserSidebar from "./UserSideBar";
 import RideHistory from "./RideHistory";
 import CurrentRide from "./CurrentRide";
 import UserSettings from "./UserSettings";
+import BecomeDriverForm from "./BecomeDriverForm";
 
 const UserDashboard = () => {
     return (
@@ -17,6 +18,7 @@ const UserDashboard = () => {
               <Route path="/rides" element={<RideHistory />} />
               <Route path="/current-ride" element={<CurrentRide />} />
               <Route path="/settings" element={<UserSettings />} />
+              <Route path="/become-driver" element={<BecomeDriverForm />} />
             </Routes>
           </div>
         </div>

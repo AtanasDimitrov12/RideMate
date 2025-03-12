@@ -20,6 +20,11 @@ const UserSidebar = () => {
           className={({ isActive }) => `block py-2 px-4 rounded ${isActive ? "bg-blue-500" : "hover:bg-gray-700"}`}>
           User Settings
         </NavLink>
+        <NavLink 
+          to="/user-dashboard/become-driver" 
+          className={({ isActive }) => `block py-2 px-4 rounded ${isActive ? "bg-blue-500" : "hover:bg-gray-700"}`}>
+          Become a driver
+        </NavLink>
       </nav>
     </aside>
   );

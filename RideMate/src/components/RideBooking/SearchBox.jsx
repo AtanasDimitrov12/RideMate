@@ -1,12 +1,49 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 
-const SearchBox = ({ label, value, setValue, fetchSuggestions, suggestions = [], handleSelect }) => {
+const SearchBox = ({ label, value, setValue, setCoords }) => {
+  const [suggestions, setSuggestions] = useState([]);
+
+  // Fetch suggestions from your API when the query is long enough
+  const fetchSuggestions = async (query) => {
+    if (query.length < 3) {
+      setSuggestions([]);
+      return;
+    }
+    try {
+      const response = await axios.get("http://localhost:8080/api/location/search", {
+        params: { q: query },
+      });
+      // Use the API response if available; otherwise, show a placeholder
+      if (response.data && response.data.length > 0) {
+        setSuggestions(response.data);
+      } else {
+        setSuggestions([{ display_name: "No results found", isPlaceholder: true }]);
+      }
+    } catch (error) {
+      console.error("Error fetching location suggestions:", error);
+      setSuggestions([]);
+    }
+  };
+
+  // When a suggestion is clicked, update the parent's state
+  const handleSelect = (suggestion) => {
+    if (suggestion.isPlaceholder) return;
+    const coords = [parseFloat(suggestion.lat), parseFloat(suggestion.lon)];
+    setValue(suggestion.display_name);
+    setCoords(coords);
+    setSuggestions([]);
+  };
+
   return (
     <div className="relative flex items-center border border-gray-300 rounded">
       <input
         type="text"
         value={value}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={(e) => {
+          setValue(e.target.value);
+          fetchSuggestions(e.target.value);
+        }}
         placeholder={label}
         className="px-4 py-2 w-full"
       />
@@ -21,7 +58,7 @@ const SearchBox = ({ label, value, setValue, fetchSuggestions, suggestions = [],
           {suggestions.map((suggestion, index) => (
             <li
               key={index}
-              onClick={() => !suggestion.isPlaceholder && handleSelect(suggestion)}
+              onClick={() => handleSelect(suggestion)}
               className={`cursor-pointer px-4 py-2 ${
                 suggestion.isPlaceholder ? "text-gray-500 italic" : "hover:bg-gray-200"
               }`}
