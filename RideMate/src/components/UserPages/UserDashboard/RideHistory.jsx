@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { getAllRidesByUserId } from "../../repositories/UserRepo";
+import { getAllRidesByUserId } from "../../../repositories/UserRepo";
 import { useContext } from "react";
-import { UserContext } from "../../UserContext"; 
+import { UserContext } from "../../../UserContext"; 
 
 const RideHistory = () => {
   const { user } = useContext(UserContext); // Get user info from context

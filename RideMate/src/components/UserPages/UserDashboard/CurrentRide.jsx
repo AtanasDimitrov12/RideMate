@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import {getCurrentRideByUserId} from "../../repositories/UserRepo";
+import {getCurrentRideByUserId} from "../../../repositories/UserRepo";
 import { useContext } from "react";
-import { UserContext } from "../../UserContext"; 
+import { UserContext } from "../../../UserContext"; 
 
 const CurrentRide = () => {
   const { user } = useContext(UserContext);

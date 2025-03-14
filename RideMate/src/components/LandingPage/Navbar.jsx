@@ -32,6 +32,7 @@ const Navbar = () => {
             )}
             {user.roles.includes("ADMIN") && (
               <>
+                <li><NavLink to="/driver-applications" className="text-white hover:underline cursor-pointer">Driver Applications</NavLink></li>
                 <li><NavLink to="/admin-dashboard" className="text-white hover:underline cursor-pointer">Dashboard</NavLink></li>
                 <li><NavLink to="/manage-users" className="text-white hover:underline cursor-pointer">Manage Users</NavLink></li>
               </>

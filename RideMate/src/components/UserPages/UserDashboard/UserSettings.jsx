@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { getUserById, updateUser } from "../../repositories/UserRepo"; // Import API calls
+import { getUserById, updateUser } from "../../../repositories/UserRepo"; // Import API calls
 import { useContext } from "react";
-import { UserContext } from "../../UserContext"; 
+import { UserContext } from "../../../UserContext"; 
 
 const UserSettings = () => {
   const { user } = useContext(UserContext);
