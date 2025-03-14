@@ -8,6 +8,7 @@ import AuthContainer from './components/Register/AuthContainer';
 import DriverApplications from "./components/AdminPages/DriverApplication/DriverApplications";
 import RideHistory from "./components/UserPages/UserDashboard/RideHistory";
 import UserDashboard from "./components/UserPages/UserDashboard/UserDashboard";
+import AdminDashboard from "./components/AdminPages/AdminDashboard/AdminDashboard";
 
 function App() {
 
@@ -17,10 +18,14 @@ function App() {
       <Navbar /> {/* Navbar stays persistent across pages */}
       <Routes>
         <Route path="/" element={<Example/>} />
+
         <Route path="/book" element={<RideHistory />} />
         <Route path="/register" element={<AuthContainer />} />
         <Route path="/user-dashboard/*" element={<UserDashboard />} />
+
         <Route path="/driver-applications" element={<DriverApplications />} />
+        <Route path="/admin-dashboard/*" element={<AdminDashboard />} />
+
       </Routes>
       <Footer/>
     </>
