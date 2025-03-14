@@ -28,6 +28,8 @@ public class DriverEntity {
     @Column(nullable = false, unique = true)
     private String licenseNumber;
 
-
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private DriverStatus status;
 }
 

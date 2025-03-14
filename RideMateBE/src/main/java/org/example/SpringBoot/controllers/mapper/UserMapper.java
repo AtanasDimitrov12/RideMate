@@ -22,6 +22,7 @@ public class UserMapper {
                 .password(userDTO.getPassword())
                 .phoneNumber(userDTO.getPhoneNumber())
                 .role(userDTO.getRole())
+                .isActive(userDTO.getIsActive())
                 .build();
     }
 
@@ -37,6 +38,7 @@ public class UserMapper {
                 .password(user.getPassword())
                 .phoneNumber(user.getPhoneNumber())
                 .role(user.getRole())
+                .isActive(user.getIsActive())
                 .build();
     }
 }

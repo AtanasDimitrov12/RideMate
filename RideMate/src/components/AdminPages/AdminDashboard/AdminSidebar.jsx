@@ -42,7 +42,17 @@ function AdminSidebar() {
           Manage Users
         </NavLink>
 
-        {/* Add more links as needed, e.g. Manage Users, Manage Rides, etc. */}
+        <NavLink
+          to="/admin-dashboard/promote-user"
+          className={({ isActive }) =>
+            isActive
+              ? "block px-3 py-2 rounded bg-blue-500 text-white"
+              : "block px-3 py-2 rounded hover:bg-gray-100 text-gray-700"
+          }
+        >
+          Promote User
+        </NavLink>
+
       </nav>
     </aside>
   );

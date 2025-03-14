@@ -35,6 +35,16 @@ export const getAllUsers = async () => {
   }
 };
 
+export const getDeactivatedUsers = async () => {
+  try {
+    const response = await backEndClient.get(`${usersURL}/deactivated`);
+    return response.data; // Return the list of users if successful
+  } catch (error) {
+    handleRequestError("Error fetching all users", error);
+    return null;
+  }
+};
+
 // Delete a user (Admin only)
 export const deleteUser = async (id) => {
   try {
@@ -71,6 +81,32 @@ export const getCurrentRideByUserId = async (userId) => {
     }
     console.error("Error fetching current ride:", error.response || error.message);
     throw error; // Let the component handle the error
+  }
+};
+
+export const getUserByUsername = async (username) => {
+  try {
+    // Assuming your backend has a GET mapping at /api/users/{username}
+    const response = await backEndClient.get(`${usersURL}/by-username/${username}`);
+    return response.data;
+  } catch (error) {
+    handleRequestError("Error fetching user by username", error);
+    return null; // or throw error, depending on your needs
+  }
+};
+
+export const changeUserStatus = async (id) => {
+  try {
+    const response = await backEndClient.put(`${usersURL}/${id}`);
+    if (response.status === 200) {
+      console.log("User status changed successfully");
+      return response.data; // Returns updated UserDTO with new status
+    }
+    console.error(`Unexpected response status: ${response.status}`);
+    return null;
+  } catch (error) {
+    handleRequestError("Error changing user status", error);
+    return null;
   }
 };
 

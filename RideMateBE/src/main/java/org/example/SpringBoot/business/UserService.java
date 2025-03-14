@@ -7,10 +7,12 @@ import java.util.Optional;
 
 public interface UserService {
     List<User> getAllUsers();
+    List<User> getDeactivatedUsers();
     User getUserById(Long id);
     User createUser(User trainer);
     void deleteUser(Long id);
     Optional<User> findUserByUsername(String username);
     Optional<User> findUserByEmail(String email);
     User updateUser(User trainer);
+    User changeUserStatus(Long id);
 }

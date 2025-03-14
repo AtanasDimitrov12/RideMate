@@ -23,6 +23,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> getDeactivatedUsers() {
+        return userRepository.getDeactivatedUsers();
+    }
+
+    @Override
     public User getUserById(Long id) {
         return userRepository.getUserById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
@@ -64,6 +69,26 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new UserNotFoundException(user.getId());
         }
+    }
+
+    @Override
+    public User changeUserStatus(Long id) {
+        if (userRepository.exists(id)) {
+            User user = userRepository.getUserById(id).orElseThrow(() -> new UserNotFoundException(id));
+            if (user.getIsActive())
+            {
+                userRepository.deactivateUser(id);
+                user.setIsActive(false);
+            }
+            else {
+                userRepository.activateUser(id);
+                user.setIsActive(true);
+            }
+            return user;
+        } else {
+            throw new UserNotFoundException(id);
+        }
+
     }
 
 

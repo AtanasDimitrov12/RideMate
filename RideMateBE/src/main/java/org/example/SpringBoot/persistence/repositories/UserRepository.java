@@ -9,6 +9,7 @@ public interface UserRepository {
     boolean exists(long id);
 
     List<User> getAll();
+    List<User> getDeactivatedUsers();
 
     List<User> getAll(int pageNumber, int pageSize);
 

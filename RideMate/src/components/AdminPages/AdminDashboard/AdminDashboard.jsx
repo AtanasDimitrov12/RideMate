@@ -5,6 +5,7 @@ import AdminSidebar from './AdminSidebar';
 import AdminStatistics from './AdminStatistics';
 import AdminProfile from './AdminProfile';
 import ManageUsers from './ManageUsers';
+import PromoteUser from './PromoteUser';
 
 function AdminDashboard() {
   return (
@@ -20,6 +21,7 @@ function AdminDashboard() {
           <Route path="/statistics" element={<AdminStatistics />} />
           <Route path="/profile" element={<AdminProfile />} />
           <Route path="/users" element={<ManageUsers />} />
+          <Route path="/promote-user" element={<PromoteUser/>}/>
           {/* Add more admin routes as needed */}
         </Routes>
       </div>

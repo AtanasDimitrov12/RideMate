@@ -34,6 +34,13 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public List<User> getDeactivatedUsers() {
+        return jpaUserRepository.findAllDeactivatedUsers().stream()
+                .map(userMapper::toDomain)
+                .toList();
+    }
+
+    @Override
     public List<User> getAll(int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         return jpaUserRepository.findAll(pageable).stream()

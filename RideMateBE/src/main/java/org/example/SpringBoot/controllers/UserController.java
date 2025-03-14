@@ -5,6 +5,7 @@ import org.example.SpringBoot.business.UserService;
 import org.example.SpringBoot.controllers.dto.UserDTO;
 import org.example.SpringBoot.controllers.mapper.UserMapper;
 import org.example.SpringBoot.domain.User;
+import org.example.SpringBoot.exception_handling.UserNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +36,16 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @GetMapping("/by-username/{username}")
+    public UserDTO getUserByUsername(@PathVariable String username) {
+        User user = userService.findUserByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException("User not found: " + username));
+
+        return userMapper.toDto(user);
+    }
+
+
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PostMapping
     public UserDTO createUser(@RequestBody UserDTO userDTO) {
         User createdUser = userService.createUser(userMapper.toDomain(userDTO));
@@ -49,6 +60,21 @@ public class UserController {
         return userMapper.toDto(updatedUser);
     }
 
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PutMapping("/{id}")
+    public UserDTO deactivateUser(@PathVariable Long id) {
+        User deactivatedUser = userService.changeUserStatus(id);
+        return userMapper.toDto(deactivatedUser);
+    }
+
+
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @GetMapping("/deactivated")
+    public List<UserDTO> getDeactivatedUsers() {
+        return userService.getDeactivatedUsers().stream()
+                .map(userMapper::toDto)
+                .toList();
+    }
 
 
     @PreAuthorize("hasRole('ADMIN')")
