@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
 
+
+
 .auth-container * {
 	box-sizing: border-box;
 }
@@ -19,6 +21,7 @@
 	align-items: center;
 	margin: 50px auto; /* Adjust the top and bottom margin as needed */
 	padding-top: 60px; /* Add padding to prevent overlap with header */
+	height:60vh;
 }
 
 
