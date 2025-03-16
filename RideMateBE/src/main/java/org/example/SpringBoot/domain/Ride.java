@@ -13,13 +13,14 @@ public class Ride {
     private Long userId;
     private Long driverId;
 
+    private RideMethod method;
+
     private String pickupLocation;
     private String dropOffLocation;
 
     private RideOption rideOption;
 
     private Double estimatedFare;
-    private Double actualFare;
 
     private RideStatus status;
 

@@ -10,6 +10,7 @@ public interface RideRepository {
     boolean exists(long id);
 
     List<Ride> getAll();
+    List<Ride> getAllRidesByStatus(RideStatus status);
     List<Ride> getAllRidesByUserId(Long userId);
 
     Ride create(Ride ride);
@@ -24,4 +25,8 @@ public interface RideRepository {
     Ride changeStatus(long rideId, RideStatus status);
 
     Ride getCurrentRideByUserId(Long userId);
+
+    Ride getCurrentRideByDriverId(Long driverId);
+
+    Ride driverGetRide(Long rideId, Long driverId);
 }

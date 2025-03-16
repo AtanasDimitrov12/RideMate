@@ -4,7 +4,7 @@ import axios from "axios";
 const SearchBox = ({ label, value, setValue, setCoords }) => {
   const [suggestions, setSuggestions] = useState([]);
 
-  // Fetch suggestions from your API when the query is long enough
+  // Fetch suggestions from your API when the search button is pressed.
   const fetchSuggestions = async (query) => {
     if (query.length < 3) {
       setSuggestions([]);
@@ -42,7 +42,8 @@ const SearchBox = ({ label, value, setValue, setCoords }) => {
         value={value}
         onChange={(e) => {
           setValue(e.target.value);
-          fetchSuggestions(e.target.value);
+          // Clear suggestions as the user types.
+          setSuggestions([]);
         }}
         placeholder={label}
         className="px-4 py-2 w-full"

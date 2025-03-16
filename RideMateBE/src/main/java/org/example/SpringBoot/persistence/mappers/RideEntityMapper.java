@@ -18,11 +18,11 @@ public class RideEntityMapper {
                 rideEntity.getId(),
                 rideEntity.getUserId(),
                 rideEntity.getDriverId(),
+                rideEntity.getMethod(),
                 rideEntity.getPickupLocation(),
                 rideEntity.getDropOffLocation(),
                 rideEntity.getRideOption(),
                 rideEntity.getEstimatedFare(),
-                rideEntity.getActualFare(),
                 rideEntity.getStatus(),
                 rideEntity.getRequestTime(),
                 rideEntity.getStartTime(),
@@ -39,11 +39,11 @@ public class RideEntityMapper {
         rideEntity.setId(ride.getId());
         rideEntity.setUserId(ride.getUserId());
         rideEntity.setDriverId(ride.getDriverId());
+        rideEntity.setMethod(ride.getMethod());
         rideEntity.setPickupLocation(ride.getPickupLocation());
         rideEntity.setDropOffLocation(ride.getDropOffLocation());
         rideEntity.setRideOption(ride.getRideOption());
         rideEntity.setEstimatedFare(ride.getEstimatedFare());
-        rideEntity.setActualFare(ride.getActualFare());
         rideEntity.setStatus(ride.getStatus());
         rideEntity.setRequestTime(ride.getRequestTime());
         rideEntity.setStartTime(ride.getStartTime());

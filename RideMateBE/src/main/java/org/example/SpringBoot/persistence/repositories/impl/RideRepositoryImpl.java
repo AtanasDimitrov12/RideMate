@@ -4,12 +4,14 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.example.SpringBoot.domain.Ride;
 import org.example.SpringBoot.domain.RideStatus;
+import org.example.SpringBoot.exception_handling.RideNotFoundException;
 import org.example.SpringBoot.persistence.entity.RideEntity;
 import org.example.SpringBoot.persistence.jpa_repositories.JpaRideRepository;
 import org.example.SpringBoot.persistence.mappers.RideEntityMapper;
 import org.example.SpringBoot.persistence.repositories.RideRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +30,13 @@ public class RideRepositoryImpl implements RideRepository {
     @Override
     public List<Ride> getAll() {
         return jpaRideRepository.findAll().stream()
+                .map(rideEntityMapper::toDomain)
+                .toList();
+    }
+
+    @Override
+    public List<Ride> getAllRidesByStatus(RideStatus status) {
+        return jpaRideRepository.findRidesByStatus(status).stream()
                 .map(rideEntityMapper::toDomain)
                 .toList();
     }
@@ -79,6 +88,10 @@ public class RideRepositoryImpl implements RideRepository {
         RideEntity RideEntity = jpaRideRepository.findById(rideId)
                 .orElseThrow(() -> new EntityNotFoundException("Ride not found with ID: " + rideId));
 
+        if(status == RideStatus.COMPLETED)
+        {
+            RideEntity.setEndTime(LocalDateTime.now());
+        }
         RideEntity.setStatus(status);
         RideEntity updatedRide = jpaRideRepository.save(RideEntity);
 
@@ -89,8 +102,27 @@ public class RideRepositoryImpl implements RideRepository {
     public Ride getCurrentRideByUserId(Long userId){
 
         return rideEntityMapper.toDomain(jpaRideRepository.findFirstByUserIdAndStatusIn(
-                userId, List.of("REQUESTED", "ACCEPTED", "IN_PROGRESS")
+                userId, List.of("REQUESTED", "ACCEPTED")
         ).orElse(null));
+    }
+
+    @Override
+    public Ride getCurrentRideByDriverId(Long driverId){
+
+        return rideEntityMapper.toDomain(jpaRideRepository.findFirstByDriverIdAndStatus(
+                driverId, RideStatus.ACCEPTED
+        ).orElse(null));
+    }
+
+    @Override
+    public Ride driverGetRide(Long rideId, Long driverId){
+
+        RideEntity rideEntity = jpaRideRepository.findById(rideId).orElseThrow(() -> new RideNotFoundException("Ride not found with ID: " + rideId));
+        rideEntity.setDriverId(driverId);
+        rideEntity.setStartTime(LocalDateTime.now());
+        rideEntity.setStatus(RideStatus.ACCEPTED);
+        return rideEntityMapper.toDomain(jpaRideRepository.save(rideEntity));
+
     }
 
 }

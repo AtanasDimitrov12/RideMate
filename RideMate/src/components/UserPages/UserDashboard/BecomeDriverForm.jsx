@@ -35,7 +35,7 @@ const BecomeDriverForm = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen mt-[-80px] ml-[-100px] md:ml-[-300px]">
+    
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl mx-auto">
         <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">Become a Driver</h2>
 
@@ -132,7 +132,7 @@ const BecomeDriverForm = () => {
           </div>
         </form>
       </div>
-    </div>
+    
   );
 };
 

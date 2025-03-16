@@ -3,6 +3,7 @@ package org.example.SpringBoot.business.impl;
 import lombok.RequiredArgsConstructor;
 import org.example.SpringBoot.business.RideService;
 import org.example.SpringBoot.domain.Ride;
+import org.example.SpringBoot.domain.RideStatus;
 import org.example.SpringBoot.exception_handling.RideNotFoundException;
 import org.example.SpringBoot.persistence.repositories.RideRepository;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,11 @@ public class RideServiceImpl implements RideService {
     }
 
     @Override
+    public List<Ride> getAllRidesByStatus(RideStatus status) {
+        return rideRepository.getAllRidesByStatus(status);
+    }
+
+    @Override
     public List<Ride> getAllRidesByUserId(Long userId){
         return rideRepository.getAllRidesByUserId(userId);
     }
@@ -29,12 +35,6 @@ public class RideServiceImpl implements RideService {
     public Ride getRideById(Long id) {
         return rideRepository.getRideById(id)
                 .orElseThrow(() -> new RideNotFoundException(id));
-    }
-
-    @Override
-    public Ride getRideByUserId(Long userId){
-        return rideRepository.getRideByUserId(userId)
-                .orElseThrow(() -> new RideNotFoundException(userId)); // for userId!!!
     }
 
     @Override
@@ -63,6 +63,30 @@ public class RideServiceImpl implements RideService {
     public Ride getCurrentRideByUserId(Long userId) {
 
         return rideRepository.getCurrentRideByUserId(userId);
+    }
+
+    @Override
+    public Ride getCurrentRideByDriverId(Long driverId) {
+
+        return rideRepository.getCurrentRideByDriverId(driverId);
+    }
+
+    @Override
+    public Ride driverGetRide(Long rideId, Long driverId) {
+
+        return rideRepository.driverGetRide(rideId, driverId);
+    }
+
+    @Override
+    public Ride changeStatus(Long rideId, RideStatus status) {
+
+        if (rideRepository.exists(rideId)) {
+
+            return rideRepository.changeStatus(rideId, status);
+        } else {
+            throw new RideNotFoundException(rideId);
+        }
+
     }
 
 

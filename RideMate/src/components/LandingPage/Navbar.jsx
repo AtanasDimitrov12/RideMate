@@ -17,7 +17,9 @@ const Navbar = () => {
   return (
     <nav className="flex justify-between items-center px-8 py-4 bg-black">
       {/* Left Section: Brand Name */}
-      <h1 className="text-xl font-bold text-white">RideMate</h1>
+      <ul>
+        <li><NavLink to="/" className="text-xl font-bold text-white">RideMate</NavLink></li>
+      </ul>
 
       {/* Center Section: Navigation Links */}
       <ul className="flex space-x-6 justify-center flex-grow">

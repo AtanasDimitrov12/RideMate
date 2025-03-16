@@ -1,10 +1,14 @@
 package org.example.SpringBoot.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.example.SpringBoot.business.DriverService;
 import org.example.SpringBoot.business.RideService;
+import org.example.SpringBoot.controllers.dto.DriverDTO;
 import org.example.SpringBoot.controllers.dto.RideDTO;
 import org.example.SpringBoot.controllers.mapper.RideMapper;
+import org.example.SpringBoot.domain.Driver;
 import org.example.SpringBoot.domain.Ride;
+import org.example.SpringBoot.domain.RideStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +21,7 @@ import java.util.List;
 public class RideController {
     
     private final RideService rideService;
+    private final DriverService driverService;
     private final RideMapper rideMapper;
 
 
@@ -24,6 +29,14 @@ public class RideController {
     @GetMapping
     public List<RideDTO> getAllRides() {
         return rideService.getAllRides().stream()
+                .map(rideMapper::toDto)
+                .toList();
+    }
+
+    @PreAuthorize("hasAnyRole('DRIVER', 'ADMIN')")
+    @GetMapping("drivers/{status}")
+    public List<RideDTO> getAllRidesByStatus(@PathVariable RideStatus status) {
+        return rideService.getAllRidesByStatus(status).stream()
                 .map(rideMapper::toDto)
                 .toList();
     }
@@ -76,6 +89,39 @@ public class RideController {
             return ResponseEntity.ok(rideMapper.toDto(currentRide));
         }
         return ResponseEntity.noContent().build();
+    }
+
+    @PreAuthorize("hasAnyRole('DRIVER', 'ADMIN')")
+    @GetMapping("/driver/{driverId}/current")
+    public ResponseEntity<RideDTO> getCurrentRideByDriverId(@PathVariable Long driverId) {
+        Driver driver = driverService.getDriverByUserId(driverId);
+        Ride currentRide = rideService.getCurrentRideByDriverId(driver.getId());
+        if (currentRide != null) {
+            return ResponseEntity.ok(rideMapper.toDto(currentRide));
+        }
+        return ResponseEntity.noContent().build();
+    }
+
+    @PreAuthorize("hasAnyRole('DRIVER', 'ADMIN')")
+    @PutMapping("/driver/{rideId}/{userId}")
+    public RideDTO driverGetRide(@PathVariable Long rideId, @PathVariable Long userId) {
+        Driver driver = driverService.getDriverByUserId(userId);
+        Ride updatedRide = rideService.driverGetRide(rideId, driver.getId());
+        return rideMapper.toDto(updatedRide);
+    }
+
+    @PreAuthorize("hasAnyRole('USER', 'DRIVER', 'ADMIN')")
+    @PutMapping("/{rideId}/{status}")
+    public RideDTO changeStatus(@PathVariable Long rideId, @PathVariable RideStatus status) {
+
+        return rideMapper.toDto(rideService.changeStatus(rideId, status));
+    }
+
+    @PreAuthorize("hasAnyRole('USER', 'DRIVER', 'ADMIN')")
+    @PutMapping("/finish/{rideId}")
+    public RideDTO finishRide(@PathVariable Long rideId) {
+
+        return rideMapper.toDto(rideService.changeStatus(rideId, RideStatus.COMPLETED));
     }
 
 }

@@ -4,9 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.SpringBoot.business.DriverService;
 import org.example.SpringBoot.domain.Driver;
 import org.example.SpringBoot.domain.DriverStatus;
-import org.example.SpringBoot.domain.User;
 import org.example.SpringBoot.exception_handling.DriverNotFoundException;
-import org.example.SpringBoot.exception_handling.UserNotFoundException;
 import org.example.SpringBoot.persistence.repositories.DriverRepository;
 import org.springframework.stereotype.Service;
 
