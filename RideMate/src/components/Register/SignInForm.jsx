@@ -51,13 +51,12 @@ const SignInForm = () => {
 
         toast.success("Login successful!", { position: "top-center" });
 
-        if (roles.includes("USER")) {
-          navigate("/");
-        } else if (roles.includes("ADMIN")) {
+        if (roles.includes("USER") || roles.includes("ADMIN") || roles.includes("DRIVER")) {
           navigate("/");
         } else {
           toast.error("Unknown role. Please contact support.", { position: "top-center" });
         }
+        
       } else {
         toast.error("Invalid username or password. Please try again.", { position: "top-center" });
       }

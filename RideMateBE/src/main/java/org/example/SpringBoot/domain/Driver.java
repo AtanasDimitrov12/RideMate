@@ -9,7 +9,7 @@ import lombok.*;
 public class Driver {
     @Setter(AccessLevel.NONE)
     private Long id;
-    private long userId;
+    private Long userId;
     private String firstName;
     private String lastName;
     private String licenseNumber;

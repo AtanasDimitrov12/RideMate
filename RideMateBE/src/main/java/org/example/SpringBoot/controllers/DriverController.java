@@ -5,6 +5,7 @@ import org.example.SpringBoot.business.DriverService;
 import org.example.SpringBoot.controllers.dto.DriverDTO;
 import org.example.SpringBoot.controllers.mapper.DriverMapper;
 import org.example.SpringBoot.domain.Driver;
+import org.example.SpringBoot.domain.DriverStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,18 +24,32 @@ public class DriverController {
         return driverMapper.toDto(Driver);
     }
 
-    @PreAuthorize("hasRole('Driver') or hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('DRIVER', 'ADMIN')")
+    @GetMapping("/status/{id}")
+    public DriverStatus getDriverStatusById(@PathVariable Long id) {
+        Driver Driver = driverService.getDriverByUserId(id);
+        return Driver.getStatus();
+    }
+
+    @PreAuthorize("hasRole('DRIVER') or hasRole('ADMIN')")
     @PostMapping
     public DriverDTO createDriver(@RequestBody DriverDTO DriverDTO) {
         Driver createdDriver = driverService.createDriver(driverMapper.toDomain(DriverDTO));
         return driverMapper.toDto(createdDriver);
     }
 
-    @PreAuthorize("hasRole('Driver') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('DRIVER') or hasRole('ADMIN')")
     @PutMapping
     public DriverDTO updateDriver(@RequestBody DriverDTO DriverDTO) {
         Driver Driver = driverMapper.toDomain(DriverDTO);
         Driver updatedDriver = driverService.updateDriver(Driver);
         return driverMapper.toDto(updatedDriver);
+    }
+
+    @PreAuthorize("hasRole('DRIVER')")
+    @PutMapping("/{id}")
+    public DriverDTO changeStatus(@PathVariable Long id) {
+        Driver driver = driverService.changeStatus(id);
+        return driverMapper.toDto(driver);
     }
 }

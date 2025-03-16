@@ -3,7 +3,10 @@ package org.example.SpringBoot.business.impl;
 import lombok.RequiredArgsConstructor;
 import org.example.SpringBoot.business.DriverService;
 import org.example.SpringBoot.domain.Driver;
+import org.example.SpringBoot.domain.DriverStatus;
+import org.example.SpringBoot.domain.User;
 import org.example.SpringBoot.exception_handling.DriverNotFoundException;
+import org.example.SpringBoot.exception_handling.UserNotFoundException;
 import org.example.SpringBoot.persistence.repositories.DriverRepository;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +29,13 @@ public class DriverServiceImpl implements DriverService {
                 .orElseThrow(() -> new DriverNotFoundException(id));
     }
 
+
+    @Override
+    public Driver getDriverByUserId(Long userId) {
+        return driverRepository.getDriverByUserId(userId)
+                .orElseThrow(() -> new DriverNotFoundException(userId));
+    }
+
     @Override
     public Driver createDriver(Driver Driver) {
 
@@ -46,5 +56,24 @@ public class DriverServiceImpl implements DriverService {
                 .orElseThrow(() -> new DriverNotFoundException("Driver with id " + Driver.getId() + " not found"));
 
         return driverRepository.update(existingDriver);
+    }
+
+    @Override
+    public Driver changeStatus(Long userid) {
+
+        Driver driver = driverRepository.getDriverByUserId(userid).orElseThrow(() -> new DriverNotFoundException(userid));
+        if (driverRepository.exists(driver.getId())) {
+
+            if (driver.getStatus()== DriverStatus.OFFLINE)
+            {
+                return driverRepository.changeStatus(userid, DriverStatus.AVAILABLE);
+            }
+            else {
+                return driverRepository.changeStatus(userid, DriverStatus.OFFLINE);
+            }
+        } else {
+            throw new DriverNotFoundException(userid);
+        }
+
     }
 }

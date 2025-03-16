@@ -1,6 +1,7 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from "../../UserContext"; // Import UserContext
+import DriverStatusToggle from "../DriverPages/DriverStatusToggle";
 
 const Navbar = () => {
   const { user, setUser } = useContext(UserContext);
@@ -39,7 +40,7 @@ const Navbar = () => {
             {user.roles.includes("DRIVER") && (
               <>
                 <li><NavLink to="/driver-dashboard" className="text-white hover:underline cursor-pointer">Driver Dashboard</NavLink></li>
-                <li><NavLink to="/my-routes" className="text-white hover:underline cursor-pointer">My Routes</NavLink></li>
+                <li><DriverStatusToggle/></li>
               </>
             )}
           </>

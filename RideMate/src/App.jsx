@@ -1,6 +1,8 @@
 import { Route, Routes } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import Example from './components/Example'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './App.css'
 import Navbar from './components/LandingPage/Navbar';
 import Footer from './components/LandingPage/Footer';
@@ -9,12 +11,13 @@ import DriverApplications from "./components/AdminPages/DriverApplication/Driver
 import RideHistory from "./components/UserPages/UserDashboard/RideHistory";
 import UserDashboard from "./components/UserPages/UserDashboard/UserDashboard";
 import AdminDashboard from "./components/AdminPages/AdminDashboard/AdminDashboard";
+import DriverDashboard from "./components/DriverPages/DriverDashboard";
 
 function App() {
 
   return (
     <>
-      
+      <ToastContainer />
       <Navbar /> {/* Navbar stays persistent across pages */}
       <Routes>
         <Route path="/" element={<Example/>} />
@@ -25,6 +28,8 @@ function App() {
 
         <Route path="/driver-applications" element={<DriverApplications />} />
         <Route path="/admin-dashboard/*" element={<AdminDashboard />} />
+
+        <Route path="/driver-dashboard/*" element={<DriverDashboard />} />
 
       </Routes>
       <Footer/>

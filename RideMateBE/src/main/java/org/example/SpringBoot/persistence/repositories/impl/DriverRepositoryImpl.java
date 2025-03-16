@@ -60,9 +60,15 @@ public class DriverRepositoryImpl implements DriverRepository {
     }
 
     @Override
-    public Driver changeStatus(Long driverId, DriverStatus status) {
-        DriverEntity driverEntity = jpaDriverRepository.findById(driverId)
-                .orElseThrow(() -> new EntityNotFoundException("Driver not found with ID: " + driverId));
+    public Optional<Driver> getDriverByUserId(long userId) {
+        return jpaDriverRepository.getDriverByUserId(userId)
+                .map(driverEntityMapper::toDomain);
+    }
+
+    @Override
+    public Driver changeStatus(Long userId, DriverStatus status) {
+        DriverEntity driverEntity = jpaDriverRepository.getDriverByUserId(userId)
+                .orElseThrow(() -> new EntityNotFoundException("Driver not found with ID: " + userId));
 
         driverEntity.setStatus(status);
         DriverEntity updatedDriver = jpaDriverRepository.save(driverEntity);

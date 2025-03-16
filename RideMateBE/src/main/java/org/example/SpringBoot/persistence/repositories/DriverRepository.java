@@ -21,4 +21,6 @@ public interface DriverRepository {
 
     Driver changeStatus(Long driverId, DriverStatus status);
 
+    Optional<Driver> getDriverByUserId(long userId);
+
 }
