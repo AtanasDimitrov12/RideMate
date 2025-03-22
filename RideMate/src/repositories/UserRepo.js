@@ -24,6 +24,16 @@ export const updateUser = async (userDTO) => {
   }
 };
 
+export const updateUserPassword = async (userId, newPassword) => {
+  try {
+    const response = await backEndClient.put(`${usersURL}/${userId}/${newPassword}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating user password:", error.response || error.message);
+    throw error;
+  }
+};
+
 // Fetch all users (Admin only)
 export const getAllUsers = async () => {
   try {

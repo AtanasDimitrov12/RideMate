@@ -61,6 +61,15 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PutMapping("/{Id}/{newPassword}")
+    public UserDTO updateUserPassword(@PathVariable Long Id, @PathVariable String newPassword) {
+
+        User updatedUser = userService.updatePassword(Id, newPassword);
+        return userMapper.toDto(updatedUser);
+    }
+
+
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PutMapping("/{id}")
     public UserDTO deactivateUser(@PathVariable Long id) {
         User deactivatedUser = userService.changeUserStatus(id);

@@ -21,6 +21,7 @@ public class UserMapper {
                 .email(userDTO.getEmail())
                 .password(userDTO.getPassword())
                 .phoneNumber(userDTO.getPhoneNumber())
+                .createdAt(userDTO.getCreatedAt())
                 .role(userDTO.getRole())
                 .isActive(userDTO.getIsActive())
                 .build();
@@ -37,6 +38,7 @@ public class UserMapper {
                 .email(user.getEmail())
                 .password(user.getPassword())
                 .phoneNumber(user.getPhoneNumber())
+                .createdAt(user.getCreatedAt())
                 .role(user.getRole())
                 .isActive(user.getIsActive())
                 .build();

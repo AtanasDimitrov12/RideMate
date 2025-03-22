@@ -14,5 +14,6 @@ public interface UserService {
     Optional<User> findUserByUsername(String username);
     Optional<User> findUserByEmail(String email);
     User updateUser(User trainer);
+    User updatePassword(Long Id, String newPassword);
     User changeUserStatus(Long id);
 }

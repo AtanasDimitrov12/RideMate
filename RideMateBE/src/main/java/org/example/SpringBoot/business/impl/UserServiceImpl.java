@@ -16,6 +16,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public List<User> getAllUsers() {
@@ -70,6 +71,18 @@ public class UserServiceImpl implements UserService {
             throw new UserNotFoundException(user.getId());
         }
     }
+
+    @Override
+    public User updatePassword(Long Id, String newPassword) {
+        if (userRepository.exists(Id)) {
+            User user = userRepository.getUserById(Id).orElseThrow(() -> new UserNotFoundException(Id));
+            user.setPassword(passwordEncoder.encode(newPassword));
+            return userRepository.update(user);
+        } else {
+            throw new UserNotFoundException(Id);
+        }
+    }
+
 
     @Override
     public User changeUserStatus(Long id) {

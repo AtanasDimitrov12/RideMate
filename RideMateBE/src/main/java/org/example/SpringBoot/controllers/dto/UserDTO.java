@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.SpringBoot.domain.Role;
 
+import java.time.LocalDateTime;
+
 
 @Data
 @Builder
@@ -17,6 +19,7 @@ public class UserDTO {
     private String email;
     private String password;
     private String phoneNumber;
+    private LocalDateTime createdAt;
     private Role role;
     private Boolean isActive;
 
