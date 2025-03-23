@@ -28,7 +28,7 @@ public class UserController {
                 .toList();
     }
 
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('USER', 'DRIVER', 'ADMIN')")
     @GetMapping("/{id}")
     public UserDTO getUserById(@PathVariable Long id) {
         User user = userService.getUserById(id);
@@ -52,7 +52,7 @@ public class UserController {
         return userMapper.toDto(createdUser);
     }
 
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('USER', 'DRIVER', 'ADMIN')")
     @PutMapping
     public UserDTO updateUser(@RequestBody UserDTO userDTO) {
         User user = userMapper.toDomain(userDTO);
@@ -60,7 +60,7 @@ public class UserController {
         return userMapper.toDto(updatedUser);
     }
 
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('USER', 'DRIVER', 'ADMIN')")
     @PutMapping("/{Id}/{newPassword}")
     public UserDTO updateUserPassword(@PathVariable Long Id, @PathVariable String newPassword) {
 
@@ -69,7 +69,7 @@ public class UserController {
     }
 
 
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('USER', 'DRIVER', 'ADMIN')")
     @PutMapping("/{id}")
     public UserDTO deactivateUser(@PathVariable Long id) {
         User deactivatedUser = userService.changeUserStatus(id);
@@ -91,6 +91,12 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<Long> getTotalRidesCount() {
+        long total = userService.countUsers();
+        return ResponseEntity.ok(total);
     }
 
 

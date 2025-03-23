@@ -2,13 +2,16 @@ package org.example.SpringBoot.business.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.example.SpringBoot.business.RideService;
+import org.example.SpringBoot.domain.Driver;
 import org.example.SpringBoot.domain.Ride;
 import org.example.SpringBoot.domain.RideStatus;
+import org.example.SpringBoot.domain.User;
 import org.example.SpringBoot.exception_handling.RideNotFoundException;
 import org.example.SpringBoot.persistence.repositories.RideRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -88,6 +91,22 @@ public class RideServiceImpl implements RideService {
         }
 
     }
+
+    @Override
+    public Optional<User> getMostActiveUser(){
+        return rideRepository.getMostActiveUser();
+    }
+
+    @Override
+    public Optional<Driver> getMostActiveDriver(){
+        return rideRepository.getMostActiveDriver();
+    }
+
+    @Override
+    public long countRides() {
+        return rideRepository.countRides();
+    }
+
 
 
 }

@@ -135,5 +135,11 @@ public class UserRepositoryImpl implements UserRepository {
         return jpaUserRepository.countByEmail(email);
     }
 
+    @Override
+    public long countUsers() {
+        return jpaUserRepository.count();
+    }
+
+
 
 }

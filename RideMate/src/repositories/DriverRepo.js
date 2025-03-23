@@ -62,6 +62,16 @@ export const changeDriverStatus = async (id) => {
   }
 };
 
+export const getTotalDriversCount = async () => {
+  try {
+    const response = await backEndClient.get(`${driversURL}/count`);
+    return response.data; // The backend should return a numeric value
+  } catch (error) {
+    console.error("Error fetching total rides count:", error.response || error.message);
+    throw error;
+  }
+};
+
 // Utility function for handling and logging request errors
 const handleRequestError = (message, error) => {
   console.error(`${message}:`, error.response || error.message);

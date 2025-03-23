@@ -23,4 +23,6 @@ public interface DriverRepository {
 
     Optional<Driver> getDriverByUserId(long userId);
 
+    long countDrivers();
+
 }

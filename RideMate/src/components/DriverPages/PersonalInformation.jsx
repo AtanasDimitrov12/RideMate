@@ -1,237 +1,158 @@
 import React, { useState, useEffect } from "react";
+import { getUserById, updateUser, updateUserPassword } from "../../repositories/UserRepo";
+import { getDriverById } from "../../repositories/DriverRepo";
+import { verifyPassword } from "../../repositories/AuthRepo";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-function PersonalInformation() {
+import PersonalInfoCard from "./PersonalInfoCard";
+import PhoneUpdateForm from "../UserPages/UserDashboard/PhoneUpdateForm";
+import PasswordUpdateForm from "../UserPages/UserDashboard/PasswordUpdateForm";
+
+const PersonalInformation = () => {
   const [formData, setFormData] = useState({
+    // Fields from the UserRepo
     username: "",
     email: "",
-    password: "",
     phoneNumber: "",
+    createdAt: "",
+    role: "",
+    isActive: false,
+    // Fields from the DriverRepo
     firstName: "",
     lastName: "",
     licenseNumber: "",
-    brand: "",
-    model: "",
-    licensePlate: "",
+    status: "",
   });
 
-  // Fetch the current driver's info when the component mounts
-  useEffect(() => {
-    async function fetchDriverData() {
-      try {
-        // Replace with your API call, for example: const data = await getCurrentDriver();
-        const data = {
-          username: "driver123",
-          email: "driver123@example.com",
-          password: "", // or leave blank if not returning password
-          phoneNumber: "123456789",
-          firstName: "John",
-          lastName: "Doe",
-          licenseNumber: "AB12345",
-          brand: "Toyota",
-          model: "Corolla",
-          licensePlate: "XYZ-9999",
-        };
+  // States for password update form
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
 
-        setFormData({
-          username: data.username || "",
-          email: data.email || "",
-          password: "", // keep blank if not changing
-          phoneNumber: data.phoneNumber || "",
-          firstName: data.firstName || "",
-          lastName: data.lastName || "",
-          licenseNumber: data.licenseNumber || "",
-          brand: data.brand || "",
-          model: data.model || "",
-          licensePlate: data.licensePlate || "",
-        });
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        // Retrieve userId from localStorage
+        const storedUser = localStorage.getItem("user");
+        let userId = null;
+        if (storedUser) {
+          const parsedUser = JSON.parse(storedUser);
+          userId = parsedUser.userId;
+        }
+        if (!userId) {
+          toast.error("User not logged in.", { position: "top-right" });
+          return;
+        }
+        // Fetch user info (from UserRepo)
+        const userData = await getUserById(userId);
+        // Fetch driver info (from DriverRepo)
+        const driverData = await getDriverById(userId);
+        if (userData && driverData) {
+          setFormData({
+            username: userData.username || "",
+            email: userData.email || "",
+            phoneNumber: userData.phoneNumber || "",
+            createdAt: userData.createdAt || "",
+            role: userData.role || "",
+            isActive: userData.isActive || false,
+            firstName: driverData.firstName || "",
+            lastName: driverData.lastName || "",
+            licenseNumber: driverData.licenseNumber || "",
+            status: driverData.status || "",
+          });
+        } else {
+          toast.error("Error fetching personal information.", { position: "top-right" });
+        }
       } catch (error) {
-        console.error("Error fetching driver data:", error);
+        console.error("Error fetching data", error);
+        toast.error("Error fetching personal information.", { position: "top-right" });
       }
     }
-
-    fetchDriverData();
+    fetchData();
   }, []);
 
-  // Handle input changes (only for editable fields)
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    // Only update if not disabled
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+  // Handle phone number change
+  const handlePhoneChange = (e) => {
+    setFormData((prev) => ({ ...prev, phoneNumber: e.target.value }));
   };
 
-  // Save changes (simulate API call)
-  const handleSave = () => {
-    console.log("Saving personal info:", formData);
-    alert("Personal information saved (mock).");
+  // Handle phone number update
+  const handlePhoneUpdate = async (e) => {
+    e.preventDefault();
+    try {
+      const userUpdate = {
+        username: formData.username,
+        email: formData.email,
+        password: "", // leave blank so the password is not overwritten
+        phoneNumber: formData.phoneNumber,
+        createdAt: formData.createdAt,
+        role: formData.role,
+        isActive: formData.isActive,
+      };
+      await updateUser(userUpdate);
+      toast.success("Phone number updated successfully!", { position: "top-right" });
+    } catch (err) {
+      toast.error("Failed to update phone number.", { position: "top-right" });
+    }
+  };
+
+  // Handle password update
+  const handlePasswordUpdate = async (e) => {
+    e.preventDefault();
+    if (newPassword.length < 8) {
+      toast.error("New password must be at least 8 characters long.", { position: "top-right" });
+      return;
+    }
+    try {
+      // Retrieve userId from localStorage
+      const storedUser = localStorage.getItem("user");
+      let userId = null;
+      if (storedUser) {
+        const parsedUser = JSON.parse(storedUser);
+        userId = parsedUser.userId;
+      }
+      if (!userId) {
+        toast.error("User not logged in.", { position: "top-right" });
+        return;
+      }
+      // Verify current password before updating
+      const isVerified = await verifyPassword({ username: formData.username, password: currentPassword });
+      if (!isVerified) {
+        toast.error("Incorrect current password.", { position: "top-right" });
+        return;
+      }
+      await updateUserPassword(userId, newPassword);
+      toast.success("Password updated successfully!", { position: "top-right" });
+      setCurrentPassword("");
+      setNewPassword("");
+    } catch (err) {
+      toast.error("Failed to update password. Please check your current password.", { position: "top-right" });
+    }
   };
 
   return (
-    <div className="bg-white p-6 rounded shadow">
-      <h1 className="text-2xl font-bold mb-4 text-gray-800">
-        Personal Information
-      </h1>
-
-      {/* Personal Info Section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-        {/* Username (Locked) */}
-        <div>
-          <label className="block text-gray-700 font-semibold mb-1">
-            Username
-          </label>
-          <input
-            type="text"
-            name="username"
-            disabled
-            className="w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 cursor-not-allowed"
-            value={formData.username}
+    <div className="p-6">
+      <ToastContainer />
+      <h2 className="text-3xl font-bold mb-6">Personal Information</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <PersonalInfoCard formData={formData} />
+        <div className="space-y-6">
+          <PhoneUpdateForm
+            newPhone={formData.phoneNumber}
+            onNewPhoneChange={handlePhoneChange}
+            onSubmit={handlePhoneUpdate}
           />
-        </div>
-
-        {/* Email (Locked) */}
-        <div>
-          <label className="block text-gray-700 font-semibold mb-1">
-            Email
-          </label>
-          <input
-            type="email"
-            name="email"
-            disabled
-            className="w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 cursor-not-allowed"
-            value={formData.email}
-          />
-        </div>
-
-        {/* Password */}
-        <div>
-          <label className="block text-gray-700 font-semibold mb-1">
-            Password
-          </label>
-          <input
-            type="password"
-            name="password"
-            className="w-full border border-gray-300 rounded px-3 py-2"
-            value={formData.password}
-            onChange={handleChange}
-            placeholder="Leave blank if not changing"
-          />
-        </div>
-
-        {/* Phone Number */}
-        <div>
-          <label className="block text-gray-700 font-semibold mb-1">
-            Phone Number
-          </label>
-          <input
-            type="text"
-            name="phoneNumber"
-            className="w-full border border-gray-300 rounded px-3 py-2"
-            value={formData.phoneNumber}
-            onChange={handleChange}
-          />
-        </div>
-
-        {/* First Name */}
-        <div>
-          <label className="block text-gray-700 font-semibold mb-1">
-            First Name
-          </label>
-          <input
-            type="text"
-            name="firstName"
-            className="w-full border border-gray-300 rounded px-3 py-2"
-            value={formData.firstName}
-            onChange={handleChange}
-          />
-        </div>
-
-        {/* Last Name */}
-        <div>
-          <label className="block text-gray-700 font-semibold mb-1">
-            Last Name
-          </label>
-          <input
-            type="text"
-            name="lastName"
-            className="w-full border border-gray-300 rounded px-3 py-2"
-            value={formData.lastName}
-            onChange={handleChange}
-          />
-        </div>
-
-        {/* License Number */}
-        <div>
-          <label className="block text-gray-700 font-semibold mb-1">
-            License Number
-          </label>
-          <input
-            type="text"
-            name="licenseNumber"
-            className="w-full border border-gray-300 rounded px-3 py-2"
-            value={formData.licenseNumber}
-            onChange={handleChange}
+          <PasswordUpdateForm
+            currentPassword={currentPassword}
+            newPassword={newPassword}
+            onCurrentPasswordChange={(e) => setCurrentPassword(e.target.value)}
+            onNewPasswordChange={(e) => setNewPassword(e.target.value)}
+            onSubmit={handlePasswordUpdate}
           />
         </div>
       </div>
-
-      {/* Car Info Section (Locked) */}
-      <h2 className="text-xl font-semibold mb-2 text-gray-800">
-        Car Information
-      </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-        {/* Brand (Locked) */}
-        <div>
-          <label className="block text-gray-700 font-semibold mb-1">
-            Brand
-          </label>
-          <input
-            type="text"
-            name="brand"
-            disabled
-            className="w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 cursor-not-allowed"
-            value={formData.brand}
-          />
-        </div>
-
-        {/* Model (Locked) */}
-        <div>
-          <label className="block text-gray-700 font-semibold mb-1">
-            Model
-          </label>
-          <input
-            type="text"
-            name="model"
-            disabled
-            className="w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 cursor-not-allowed"
-            value={formData.model}
-          />
-        </div>
-
-        {/* License Plate (Locked) */}
-        <div>
-          <label className="block text-gray-700 font-semibold mb-1">
-            License Plate
-          </label>
-          <input
-            type="text"
-            name="licensePlate"
-            disabled
-            className="w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 cursor-not-allowed"
-            value={formData.licensePlate}
-          />
-        </div>
-      </div>
-
-      <button
-        onClick={handleSave}
-        className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
-      >
-        Save Changes
-      </button>
     </div>
   );
-}
+};
 
 export default PersonalInformation;

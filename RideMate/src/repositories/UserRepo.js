@@ -120,7 +120,15 @@ export const changeUserStatus = async (id) => {
   }
 };
 
-
+export const getTotalUsersCount = async () => {
+  try {
+    const response = await backEndClient.get(`${usersURL}/count`);
+    return response.data; // The backend should return a numeric value
+  } catch (error) {
+    console.error("Error fetching total rides count:", error.response || error.message);
+    throw error;
+  }
+};
 
 
 // Utility function for handling and logging request errors

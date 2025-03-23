@@ -13,4 +13,5 @@ public interface DriverService {
         void deleteDriver(Long id);
         Driver updateDriver(Driver driver);
         Driver changeStatus(Long id);
+        long countDrivers();
 }

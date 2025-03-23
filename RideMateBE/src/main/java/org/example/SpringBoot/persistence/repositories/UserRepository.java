@@ -41,4 +41,6 @@ public interface UserRepository {
 
     long countByEmail(String email);
 
+    long countUsers();
+
 }

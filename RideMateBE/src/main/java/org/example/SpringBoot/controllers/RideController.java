@@ -5,7 +5,10 @@ import org.example.SpringBoot.business.DriverService;
 import org.example.SpringBoot.business.RideService;
 import org.example.SpringBoot.controllers.dto.DriverDTO;
 import org.example.SpringBoot.controllers.dto.RideDTO;
+import org.example.SpringBoot.controllers.dto.UserDTO;
+import org.example.SpringBoot.controllers.mapper.DriverMapper;
 import org.example.SpringBoot.controllers.mapper.RideMapper;
+import org.example.SpringBoot.controllers.mapper.UserMapper;
 import org.example.SpringBoot.domain.Driver;
 import org.example.SpringBoot.domain.Ride;
 import org.example.SpringBoot.domain.RideStatus;
@@ -23,6 +26,8 @@ public class RideController {
     private final RideService rideService;
     private final DriverService driverService;
     private final RideMapper rideMapper;
+    private final UserMapper userMapper;
+    private final DriverMapper driverMapper;
 
 
     @PreAuthorize("hasAnyRole('USER', 'DRIVER', 'ADMIN')")
@@ -123,5 +128,28 @@ public class RideController {
 
         return rideMapper.toDto(rideService.changeStatus(rideId, RideStatus.COMPLETED));
     }
+
+    @GetMapping("/active/user")
+    public ResponseEntity<UserDTO> getMostActiveUser() {
+        return rideService.getMostActiveUser()
+                .map(userMapper::toDto)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/active/driver")
+    public ResponseEntity<DriverDTO> getMostActiveDriver() {
+        return rideService.getMostActiveDriver()
+                .map(driverMapper::toDto)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<Long> getTotalRidesCount() {
+        long total = rideService.countRides();
+        return ResponseEntity.ok(total);
+    }
+
 
 }

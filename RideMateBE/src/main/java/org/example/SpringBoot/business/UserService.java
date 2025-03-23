@@ -16,4 +16,5 @@ public interface UserService {
     User updateUser(User trainer);
     User updatePassword(Long Id, String newPassword);
     User changeUserStatus(Long id);
+    long countUsers();
 }

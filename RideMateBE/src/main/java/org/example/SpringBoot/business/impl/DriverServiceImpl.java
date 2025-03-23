@@ -23,7 +23,7 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public Driver getDriverById(Long id) {
-        return driverRepository.getDriverById(id)
+        return driverRepository.getDriverByUserId(id)
                 .orElseThrow(() -> new DriverNotFoundException(id));
     }
 
@@ -74,4 +74,10 @@ public class DriverServiceImpl implements DriverService {
         }
 
     }
+
+    @Override
+    public long countDrivers() {
+        return driverRepository.countDrivers();
+    }
+
 }

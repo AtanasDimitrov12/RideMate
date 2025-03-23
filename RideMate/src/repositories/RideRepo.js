@@ -145,6 +145,45 @@ export const finishRide = async (rideId) => {
     }
   };
 
+  /**
+ * Fetch the most active user from the backend.
+ * @returns {Promise<Object>} The most active user data.
+ */
+export const getMostActiveUser = async () => {
+  try {
+    const response = await backEndClient.get(`${ridesURL}/active/user`);
+    return response.data; // assume the backend returns a user object/DTO
+  } catch (error) {
+    console.error("Error fetching most active user:", error.response || error.message);
+    throw error;
+  }
+};
+
+/**
+ * Fetch the most active driver from the backend.
+ * @returns {Promise<Object>} The most active driver data.
+ */
+export const getMostActiveDriver = async () => {
+  try {
+    const response = await backEndClient.get(`${ridesURL}/active/driver`);
+    return response.data; // assume the backend returns a driver object/DTO
+  } catch (error) {
+    console.error("Error fetching most active driver:", error.response || error.message);
+    throw error;
+  }
+};
+
+
+  export const getTotalRidesCount = async () => {
+    try {
+      const response = await backEndClient.get(`${ridesURL}/count`);
+      return response.data; // The backend should return a numeric value
+    } catch (error) {
+      console.error("Error fetching total rides count:", error.response || error.message);
+      throw error;
+    }
+  };
+
 // Utility function for handling and logging request errors
 const handleRequestError = (message, error) => {
   console.error(`${message}:`, error.response || error.message);

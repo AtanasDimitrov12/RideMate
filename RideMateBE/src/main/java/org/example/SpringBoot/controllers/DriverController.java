@@ -6,6 +6,7 @@ import org.example.SpringBoot.controllers.dto.DriverDTO;
 import org.example.SpringBoot.controllers.mapper.DriverMapper;
 import org.example.SpringBoot.domain.Driver;
 import org.example.SpringBoot.domain.DriverStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,5 +52,11 @@ public class DriverController {
     public DriverDTO changeStatus(@PathVariable Long id) {
         Driver driver = driverService.changeStatus(id);
         return driverMapper.toDto(driver);
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<Long> getTotalDriversCount() {
+        long total = driverService.countDrivers();
+        return ResponseEntity.ok(total);
     }
 }

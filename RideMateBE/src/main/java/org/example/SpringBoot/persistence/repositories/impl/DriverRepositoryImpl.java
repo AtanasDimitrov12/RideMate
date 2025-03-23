@@ -76,4 +76,10 @@ public class DriverRepositoryImpl implements DriverRepository {
         return driverEntityMapper.toDomain(updatedDriver); // Assuming you have a mapper
     }
 
+    @Override
+    public long countDrivers() {
+        return jpaDriverRepository.count();
+    }
+
+
 }

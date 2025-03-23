@@ -2,12 +2,18 @@ package org.example.SpringBoot.persistence.repositories.impl;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.example.SpringBoot.domain.Driver;
 import org.example.SpringBoot.domain.Ride;
 import org.example.SpringBoot.domain.RideStatus;
+import org.example.SpringBoot.domain.User;
 import org.example.SpringBoot.exception_handling.RideNotFoundException;
+import org.example.SpringBoot.persistence.entity.DriverEntity;
 import org.example.SpringBoot.persistence.entity.RideEntity;
+import org.example.SpringBoot.persistence.entity.UserEntity;
 import org.example.SpringBoot.persistence.jpa_repositories.JpaRideRepository;
+import org.example.SpringBoot.persistence.mappers.DriverEntityMapper;
 import org.example.SpringBoot.persistence.mappers.RideEntityMapper;
+import org.example.SpringBoot.persistence.mappers.UserEntityMapper;
 import org.example.SpringBoot.persistence.repositories.RideRepository;
 import org.springframework.stereotype.Repository;
 
@@ -21,6 +27,8 @@ public class RideRepositoryImpl implements RideRepository {
     
     private final JpaRideRepository jpaRideRepository;
     private final RideEntityMapper rideEntityMapper;
+    private final UserEntityMapper userEntityMapper;
+    private final DriverEntityMapper driverEntityMapper;
 
     @Override
     public boolean exists(long id) {
@@ -123,6 +131,25 @@ public class RideRepositoryImpl implements RideRepository {
         rideEntity.setStatus(RideStatus.ACCEPTED);
         return rideEntityMapper.toDomain(jpaRideRepository.save(rideEntity));
 
+    }
+
+    // New method: Get the most active user (the user with the most rides)
+    @Override
+    public Optional<User> getMostActiveUser() {
+        Optional<UserEntity> userEntity = jpaRideRepository.findMostActiveUser();
+        return userEntity.map(userEntityMapper::toDomain);
+    }
+
+    // New method: Get the most active driver (the driver with the most rides)
+    @Override
+    public Optional<Driver> getMostActiveDriver() {
+        Optional<DriverEntity> driverEntity = jpaRideRepository.findMostActiveDriver();
+        return driverEntity.map(driverEntityMapper::toDomain);
+    }
+
+    @Override
+    public long countRides() {
+        return jpaRideRepository.count();
     }
 
 }
