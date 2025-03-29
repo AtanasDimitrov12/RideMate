@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { driverApplications } from '../driveData'; // or your API fetch
+import { getDriverRequests, deleteDriverRequest } from '../../../repositories/DriverRequestRepo';
+import { createDriver } from '../../../repositories/DriverRepo';
+import { createVehicle } from '../../../repositories/VehicleRepo';
 import SearchBar from './SearchBar';
 import ApplicantList from './ApplicantList';
 import ApplicantDetails from './ApplicantDetails';
@@ -11,14 +13,16 @@ function DriverApplications() {
   const [selectedCategory, setSelectedCategory] = useState(null);
 
   useEffect(() => {
-    // In a real app, fetch data from your API here
-    // fetch('/api/driver-applications')
-    //   .then(res => res.json())
-    //   .then(data => setApplications(data))
-    //   .catch(err => console.error(err));
+    const fetchApplications = async () => {
+      try {
+        const data = await getDriverRequests();
+        setApplications(data);
+      } catch (error) {
+        console.error('Error fetching driver applications:', error);
+      }
+    };
 
-    // Using mock data for now:
-    setApplications(driverApplications);
+    fetchApplications();
   }, []);
 
   // When an applicant is clicked, set that applicant as selected and reset category
@@ -27,18 +31,66 @@ function DriverApplications() {
     setSelectedCategory(null);
   };
 
-  // Approve/Decline handlers (currently just logs to console)
-  const handleApprove = (app) => {
-    console.log('Approved:', app, 'with category:', selectedCategory);
+  // Decline handler: simply delete the driver request
+  const handleDecline = async (app) => {
+    try {
+      await deleteDriverRequest(app.id);
+      console.log('Declined:', app);
+      // Remove the declined application from the list
+      setApplications(applications.filter(item => item.id !== app.id));
+      setSelectedApp(null);
+    } catch (error) {
+      console.error('Error declining application:', error);
+    }
   };
 
-  const handleDecline = (app) => {
-    console.log('Declined:', app);
+  // Approve handler: delete the driver request, create a driver and then create a vehicle
+  const handleApprove = async (app) => {
+    try {
+      // 1. Delete the driver request
+      await deleteDriverRequest(app.id);
+
+      // 2. Create a new driver
+      const driverDTO = {
+        userId: app.userId, // if applicable
+        firstName: app.firstName,
+        lastName: app.lastName,
+        licenseNumber: app.licenseNumber,
+        Status:"OFFLINE",
+        rideOption: selectedCategory,
+      };
+      const newDriver = await createDriver(driverDTO);
+      if (!newDriver) {
+        console.error("Error creating driver");
+        return;
+      }
+
+      // 3. Create a vehicle for the new driver
+      const vehicleDTO = {
+        driverId: newDriver.id, // Adjust according to your driver's returned field
+        brand: app.brand,
+        model: app.model,
+        licensePlate: app.licensePlate,
+      };
+      const newVehicle = await createVehicle(vehicleDTO);
+      if (!newVehicle) {
+        console.error("Error creating vehicle");
+        return;
+      }
+
+      console.log('Approved:', app, 'with category:', selectedCategory);
+      // Remove the approved application from the list
+      setApplications(applications.filter(item => item.id !== app.id));
+      setSelectedApp(null);
+    } catch (error) {
+      console.error('Error approving application:', error);
+    }
   };
 
-  // Filter the applications based on the search term
+  // Filter the applications based on the search term.
+  // Assuming each application has firstName and lastName.
   const filteredApps = applications.filter((app) =>
-    app.name.toLowerCase().includes(searchTerm.toLowerCase())
+    (`${app.firstName || ""} ${app.lastName || ""}`).toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (

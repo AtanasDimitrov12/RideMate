@@ -66,7 +66,10 @@ public class DriverServiceImpl implements DriverService {
             {
                 return driverRepository.changeStatus(userid, DriverStatus.AVAILABLE);
             }
-            else {
+            else if (driver.getStatus()== DriverStatus.ON_RIDE){
+                return driverRepository.changeStatus(userid, driver.getStatus());
+            }
+            else{
                 return driverRepository.changeStatus(userid, DriverStatus.OFFLINE);
             }
         } else {

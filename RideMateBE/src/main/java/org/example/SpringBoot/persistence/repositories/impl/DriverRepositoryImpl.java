@@ -34,6 +34,7 @@ public class DriverRepositoryImpl implements DriverRepository {
 
     @Override
     public Driver create(Driver driver) {
+        driver.setStatus(DriverStatus.OFFLINE);
         DriverEntity DriverEntity = driverEntityMapper.toEntity(driver);
         DriverEntity savedEntity = jpaDriverRepository.save(DriverEntity);
         return driverEntityMapper.toDomain(savedEntity);

@@ -20,7 +20,9 @@ public class DriverEntityMapper {
             driverEntity.getFirstName(),
             driverEntity.getLastName(),
             driverEntity.getLicenseNumber(),
-            driverEntity.getStatus()
+            driverEntity.getStatus(),
+            driverEntity.getRideOption()
+
         );
     }
 
@@ -36,6 +38,7 @@ public class DriverEntityMapper {
         driverEntity.setLastName(driver.getLastName());
         driverEntity.setLicenseNumber(driver.getLicenseNumber());
         driverEntity.setStatus(driver.getStatus());
+        driverEntity.setRideOption(driver.getRideOption());
         return driverEntity;
     }
 

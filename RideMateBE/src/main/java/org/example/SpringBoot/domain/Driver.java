@@ -6,7 +6,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Driver {
+public class  Driver {
     @Setter(AccessLevel.NONE)
     private Long id;
     private Long userId;
@@ -14,5 +14,6 @@ public class Driver {
     private String lastName;
     private String licenseNumber;
     private DriverStatus status;
+    private RideOption rideOption;
 
 }

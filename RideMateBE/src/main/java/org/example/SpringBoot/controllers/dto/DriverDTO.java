@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.SpringBoot.domain.DriverStatus;
+import org.example.SpringBoot.domain.RideOption;
 
 @Data
 @Builder
@@ -17,4 +18,5 @@ public class DriverDTO {
     private String lastName;
     private String licenseNumber;
     private DriverStatus status;
+    private RideOption rideOption;
 }

@@ -15,7 +15,7 @@ function ApplicantDetails({
   return (
     <>
       <h2 className="text-xl font-semibold text-gray-700">
-        Name: {selectedApp.name}
+        Name: {selectedApp.firstName + " " + selectedApp.lastName}
       </h2>
       <p className="mt-2">
         <strong>License number:</strong> {selectedApp.licenseNumber}

@@ -19,6 +19,7 @@ public class DriverMapper {
                 .lastName(driverDTO.getLastName())
                 .licenseNumber(driverDTO.getLicenseNumber())
                 .status(driverDTO.getStatus())
+                .rideOption(driverDTO.getRideOption())
                 .build();
     }
 
@@ -34,6 +35,7 @@ public class DriverMapper {
                 .lastName(driver.getLastName())
                 .licenseNumber(driver.getLicenseNumber())
                 .status(driver.getStatus())
+                .rideOption(driver.getRideOption())
                 .build();
     }
 }

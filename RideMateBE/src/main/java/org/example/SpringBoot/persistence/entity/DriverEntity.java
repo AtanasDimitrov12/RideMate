@@ -3,6 +3,7 @@ package org.example.SpringBoot.persistence.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.example.SpringBoot.domain.DriverStatus;
+import org.example.SpringBoot.domain.RideOption;
 
 @Entity
 @Table(name = "drivers")
@@ -31,5 +32,9 @@ public class DriverEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private DriverStatus status;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private RideOption rideOption;
 }
 

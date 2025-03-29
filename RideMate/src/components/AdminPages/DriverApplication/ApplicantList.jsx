@@ -18,7 +18,7 @@ function ApplicantList({ applicants, selectedApp, onSelect }) {
               }`}
               onClick={() => onSelect(app)}
             >
-              {app.name} wants to become a driver
+              {app.firstName + " " + app.lastName} wants to become a driver
             </div>
           ))
         ) : (
