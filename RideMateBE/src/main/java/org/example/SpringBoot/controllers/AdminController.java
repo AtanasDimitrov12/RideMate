@@ -36,6 +36,13 @@ public class AdminController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/department/{userId}")
+    public String getAdminDepartmentByUserId(@PathVariable Long userId) {
+        Admin admin = adminService.getAdminByUserId(userId);
+        return admin.getDepartment();
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public AdminDTO createAdmin(@RequestBody AdminDTO adminDTO) {
         Admin admin = adminService.createAdmin(adminMapper.toDomain(adminDTO));
@@ -52,9 +59,20 @@ public class AdminController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/{department}/{userId}")
+    public AdminDTO updateAdmin(@PathVariable String department, @PathVariable Long userId) {
+        Admin admin = adminService.getAdminByUserId(userId);
+        Admin updatedAdmin = adminService.updateDepartment(admin, department);
+        return adminMapper.toDto(updatedAdmin);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAdmin(@PathVariable Long id) {
         adminService.deleteAdmin(id);
         return ResponseEntity.noContent().build();
     }
+
+
+
 }

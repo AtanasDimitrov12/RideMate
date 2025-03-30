@@ -56,8 +56,8 @@ function DriverApplications() {
         firstName: app.firstName,
         lastName: app.lastName,
         licenseNumber: app.licenseNumber,
-        Status:"OFFLINE",
-        rideOption: selectedCategory,
+        status:"OFFLINE",
+        rideOption: selectedCategory ? selectedCategory.toUpperCase() : "",
       };
       const newDriver = await createDriver(driverDTO);
       if (!newDriver) {

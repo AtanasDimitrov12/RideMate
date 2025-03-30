@@ -11,6 +11,8 @@ public interface AdminRepository {
 
     List<Admin> getAll();
 
+    Optional<Admin> getAdminByUserId(long userId);
+
     Admin create(Admin admin);
 
     Admin update(Admin admin);

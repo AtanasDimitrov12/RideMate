@@ -2,6 +2,7 @@ package org.example.SpringBoot.persistence.repositories.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.example.SpringBoot.domain.Admin;
+import org.example.SpringBoot.domain.Driver;
 import org.example.SpringBoot.persistence.entity.AdminEntity;
 import org.example.SpringBoot.persistence.jpa_repositories.JpaAdminRepository;
 import org.example.SpringBoot.persistence.mappers.AdminEntityMapper;
@@ -29,6 +30,12 @@ public class AdminRepositoryImpl implements AdminRepository {
         return jpaAdminRepository.findAll().stream()
                 .map(adminEntityMapper::toDomain)
                 .toList();
+    }
+
+    @Override
+    public Optional<Admin> getAdminByUserId(long userId) {
+        return jpaAdminRepository.getAdminByUserId(userId)
+                .map(adminEntityMapper::toDomain);
     }
 
     @Override

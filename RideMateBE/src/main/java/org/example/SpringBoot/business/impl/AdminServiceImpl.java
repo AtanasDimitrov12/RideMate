@@ -3,7 +3,9 @@ package org.example.SpringBoot.business.impl;
 import lombok.RequiredArgsConstructor;
 import org.example.SpringBoot.business.AdminService;
 import org.example.SpringBoot.domain.Admin;
+import org.example.SpringBoot.domain.Driver;
 import org.example.SpringBoot.exception_handling.AdminNotFoundException;
+import org.example.SpringBoot.exception_handling.DriverNotFoundException;
 import org.example.SpringBoot.persistence.repositories.AdminRepository;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +29,12 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public Admin getAdminByUserId(Long userId) {
+        return adminRepository.getAdminByUserId(userId)
+                .orElseThrow(() -> new AdminNotFoundException(userId));
+    }
+
+    @Override
     public Admin createAdmin(Admin admin) {
 
         return adminRepository.create(admin);
@@ -46,5 +54,11 @@ public class AdminServiceImpl implements AdminService {
                 .orElseThrow(() -> new AdminNotFoundException("Admin with id " + admin.getId() + " not found"));
 
         return adminRepository.update(existingAdmin);
+    }
+
+    @Override
+    public Admin updateDepartment(Admin admin, String department){
+        admin.setDepartment(department);
+        return adminRepository.update(admin);
     }
 }

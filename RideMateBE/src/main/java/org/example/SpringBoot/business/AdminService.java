@@ -8,7 +8,9 @@ import java.util.Optional;
 public interface AdminService {
     List<Admin> getAllAdmins();
     Admin getAdminById(Long id);
-    Admin createAdmin(Admin trainer);
+    Admin getAdminByUserId(Long userId);
+    Admin createAdmin(Admin admin);
     void deleteAdmin(Long id);
-    Admin updateAdmin(Admin trainer);
+    Admin updateAdmin(Admin admin);
+    Admin updateDepartment(Admin admin, String department);
 }
