@@ -1,81 +1,56 @@
+version: "3.8"
 
 services:
-  fitness-app:
+  ridemate-backend:
     build:
       context: .
       dockerfile: Dockerfile
-    image: fitness-app-backend:latest
+    image: ridemate-backend:latest
+    container_name: ridemate-backend
     ports:
       - "8090:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://fitness-app-db:3306/fitness_app_db
+      SPRING_DATASOURCE_URL: jdbc:mysql://ridemate-db:3306/ridemate
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: FontysPass12#
       JAVA_OPTS: "-Xms256m -Xmx512m"
     depends_on:
-      - fitness-app-db
+      - ridemate-db
     networks:
-      - fitness-network
+      - ridemate-network
     restart: unless-stopped
 
-
-  fitness-app-db:
+  ridemate-db:
     image: mysql:latest
-    container_name: fitness-app-db
+    container_name: ridemate-db
     environment:
-      MYSQL_DATABASE: fitness_app_db
+      MYSQL_DATABASE: ridemate
       MYSQL_ROOT_PASSWORD: FontysPass12#
     ports:
-      - "3308:3306"
+      - "3307:3306"  # Changed external port to 3307
     volumes:
-      - db_data:/var/lib/mysql # Ensures database data persists
+      - db_data:/var/lib/mysql
     networks:
-      - fitness-network
+      - ridemate-network
     restart: unless-stopped
 
-  sonarqube:
-    image: sonarqube:latest
-    container_name: sonarqube
-    network_mode: "bridge" # Changed from host for better isolation (host is risky for cross-platform setups)
-    environment:
-      SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: "true"
-      SONAR_WEB_JVM_OPTS: "-Xmx512m -Xms512m -XX:+HeapDumpOnOutOfMemoryError"
-    ports:
-      - "9000:9000"
-    volumes:
-      - sonarqube_data:/opt/sonarqube/data
-      - sonarqube_extensions:/opt/sonarqube/extensions
-      - sonarqube_logs:/opt/sonarqube/logs
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:9000 || exit 1"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-    depends_on:
-      - fitness-app
-    restart: unless-stopped
-
-  fitness-app-frontend:
-    image: fitness-app-frontend:latest  # Fallback to locally built image
-    container_name: fitness-app-frontend
-    ports:
-      - "5173:80"
-    depends_on:
-      - fitness-app
-    networks:
-      - fitness-network
-    restart: unless-stopped
+  ridemate-frontend:
     build:
-      context: ./frontend  # This must match the cloned frontend repo folder
-      dockerfile: Dockerfile  # Ensure this matches the actual Dockerfile name
-
+      context: ../RideMate/
+      dockerfile: Dockerfile
+    image: ridemate-frontend:latest
+    container_name: ridemate-frontend
+    ports:
+      - "5174:80"
+    depends_on:
+      - ridemate-backend
+    networks:
+      - ridemate-network
+    restart: unless-stopped
 
 networks:
-  fitness-network:
+  ridemate-network:
     driver: bridge
 
 volumes:
-  db_data: # Persistent volume for the database
-  sonarqube_data:
-  sonarqube_extensions:
-  sonarqube_logs:
+  db_data:
