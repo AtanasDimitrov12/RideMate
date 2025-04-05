@@ -86,10 +86,18 @@ public class UserController {
     }
 
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @DeleteMapping("email/{email}")
+    public ResponseEntity<Void> deleteUserByEmail(@PathVariable String email) {
+        User user = userService.findUserByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found: " + email));
+        userService.deleteUser(user.getId());
         return ResponseEntity.noContent().build();
     }
 

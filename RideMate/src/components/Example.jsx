@@ -2,7 +2,6 @@ import React from "react";
 import HeroSection from "./LandingPage/HeroSection";
 import FeaturesSection from "./LandingPage/FeaturesSection";
 import HowItWorksSection from "./LandingPage/HowItWorksSection";
-import Footer from "./LandingPage/Footer";
 
 const RideMateLanding = () => {
   return (
