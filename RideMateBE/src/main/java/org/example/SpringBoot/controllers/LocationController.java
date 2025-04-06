@@ -6,6 +6,7 @@ import org.springframework.web.client.RestTemplate;
 
 @RestController
 @RequestMapping("/api/location")
+@CrossOrigin(origins = "https://ridemate-app.netlify.app/") // Allow frontend requests
 public class LocationController {
 
     private final RestTemplate restTemplate = new RestTemplate();
