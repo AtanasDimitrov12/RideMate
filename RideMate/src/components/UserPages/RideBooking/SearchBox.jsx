@@ -12,7 +12,7 @@ const SearchBox = ({ label, value, setValue, setCoords }) => {
       return;
     }
     try {
-      const response = await axios.get(`${backEndClient}/api/location/search`, {
+      const response = await backEndClient.get('/api/location/search', {
         params: { q: query },
       });
       // Use the API response if available; otherwise, show a placeholder
