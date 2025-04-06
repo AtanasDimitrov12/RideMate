@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import backEndClient from "../../../repositories/axiosClient";
 
 const SearchBox = ({ label, value, setValue, setCoords }) => {
   const [suggestions, setSuggestions] = useState([]);
@@ -11,7 +12,7 @@ const SearchBox = ({ label, value, setValue, setCoords }) => {
       return;
     }
     try {
-      const response = await axios.get("http://localhost:8080/api/location/search", {
+      const response = await axios.get(`${backEndClient}/api/location/search`, {
         params: { q: query },
       });
       // Use the API response if available; otherwise, show a placeholder

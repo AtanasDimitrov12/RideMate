@@ -6,7 +6,6 @@ import org.springframework.web.client.RestTemplate;
 
 @RestController
 @RequestMapping("/api/location")
-@CrossOrigin(origins = "http://localhost:5173") // Allow frontend requests
 public class LocationController {
 
     private final RestTemplate restTemplate = new RestTemplate();
