@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const backEndClient = axios.create({
-  baseURL: 'http://localhost:https://ridemate-d7by.onrender.com', // Replace with your backend's base URL
+  baseURL: 'https://ridemate-d7by.onrender.com', // Replace with your backend's base URL
 });
 
 // Add an interceptor to include the token
